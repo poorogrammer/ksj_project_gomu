@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_ONE 20
+#define MAX_TWO 512
+
+void hello();
+void rp();
+void wh();
+void whop();
+
+int main(int argc, char* argv[])      // 옵션의 개수와 옵션 문자열을 배열로 받음
+{
+    char c1[MAX_ONE];
+    
+    while (true) {
+        printf("------------------------------------------\n");
+        printf("사용예제 \n");
+        printf("rp 보고서실행\n");
+        printf("help 설명서 \n");
+        printf("wh 화이트리스트 목록\n");
+        printf("whop 화이트리스트 옵션\n ");
+        printf("exit 종료");
+        printf("------------------------------------------\n");
+        printf("\n");
+
+        puts("command>>>>");
+        gets_s(c1);
+
+        printf("입력 >>>%s\n", c1);
+
+        if (c1 == "rp") {
+            rp();
+            continue;
+        }
+        else if (c1 == "help") {
+            help();
+            continue;
+        }
+        else if (c1 == "wh") {
+            wh();
+            continue;
+        }
+        else if (c1 == "whop") {
+            whop();
+            continue;
+        }
+        else if (c1 == "exit") {
+            exit(0);
+            continue;
+        }
+        else {
+            continue;
+        }
+    }
+   
+    return 0;
+}
+void rp()   
+{
+    printf("Hello, world!\n");    
+}
+void help()   
+{
+    printf("readme\n");    
+}
+void wh()   
+{
+
+    int line_count = 0;
+
+    char buffer[MAX_TWO];
+
+    FILE* p_file = NULL;
+
+    if (0 == fopen_s(&p_file, "whitelist01.txt", "rt")) {
+        printf("whitelist01.txt 파일의 내용은 다음과 같습니다.\n\n");
+
+        while (fgets(buffer, MAX_TWO, p_file) != NULL) {
+
+            line_count++;
+ 
+            printf("[%d]번째 줄 : %s", line_count, buffer);
+        }
+
+        fclose(p_file);
+
+        printf("\n\n");
+    }
+}
+void whop()    
+{
+    printf("Hello, world!\n");    
+}
+void hello()   
+{
+    printf("Hello, world!\n");    
+}
