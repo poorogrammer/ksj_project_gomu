@@ -10,9 +10,9 @@ struct _finddata_t fd;
 int isFileOrDir()
 {
     if (fd.attrib & _A_SUBDIR)
-        return 0; // µğ·ºÅä¸®¸é 0 ¹İÈ¯
+        return 0; // ë””ë ‰í† ë¦¬ë©´ 0 ë°˜í™˜
     else
-        return 1; // ±×¹ÛÀÇ °æ¿ì´Â "Á¸ÀçÇÏ´Â ÆÄÀÏ"ÀÌ±â¿¡ 1 ¹İÈ¯
+        return 1; // ê·¸ë°–ì˜ ê²½ìš°ëŠ” "ì¡´ì¬í•˜ëŠ” íŒŒì¼"ì´ê¸°ì— 1 ë°˜í™˜
 
 }
 
@@ -38,15 +38,15 @@ void FileSearch(char file_path[])
         strcpy(file_pt, file_path2);
         strcat(file_pt, fd.name);
 
-        check = isFileOrDir();    //ÆÄÀÏÀÎÁö µğ·ºÅä¸® ÀÎÁö ½Äº°
+        check = isFileOrDir();    //íŒŒì¼ì¸ì§€ ë””ë ‰í† ë¦¬ ì¸ì§€ ì‹ë³„
 
         if (check == 0 && fd.name[0] != '.')
         {
-            FileSearch(file_pt);    //ÇÏÀ§ µğ·ºÅä¸® °Ë»ö Àç±ÍÇÔ¼ö
+            FileSearch(file_pt);    //í•˜ìœ„ ë””ë ‰í† ë¦¬ ê²€ìƒ‰ ì¬ê·€í•¨ìˆ˜
         }
         else if (check == 1 && fd.size != 0 && fd.name[0] != '.')
         {
-            printf("ÆÄÀÏ¸í : %s, Å©±â:%d\n", file_pt, fd.size);
+            printf("íŒŒì¼ëª… : %s, í¬ê¸°:%d\n", file_pt, fd.size);
         }
     }
     _findclose(handle);
@@ -54,55 +54,9 @@ void FileSearch(char file_path[])
 
 int main()
 {
-    char file_path[_MAX_PATH] = "c:";    //C:\ °æ·Î Å½»ö
+    char file_path[_MAX_PATH] = "c:";    //C:\ ê²½ë¡œ íƒìƒ‰
 
     FileSearch(file_path);
 
     return 0;
 }
-
-// ½Äº°
-/*
-#pragma warning ( disable : 4996 )
-#include <stdio.h>
-#include <io.h>
-
-int isFileOrDir(char* s);
-
-int main(void) {
-    char* filename = "C:\\test";
-
-    int result = isFileOrDir(filename);
-
-    if (result == 1)
-        puts("ÆÄÀÏÀÔ´Ï´Ù.");
-
-    else if (result == 0)
-        puts("µğ·ºÅä¸®ÀÔ´Ï´Ù.");
-    else    //result == -1
-        puts("±×·± ÆÄÀÏ ¶Ç´Â µğ·ºÅä¸®´Â ¾ø½À´Ï´Ù.");
-
-    return 0;
-}
-
-int isFileOrDir(char* s) {
-    _finddatai64_t c_file;
-    intptr_t hFile;
-    int result;
-
-
-    if ((hFile = _findfirsti64(s, &c_file)) == -1L)
-        result = -1; // ÆÄÀÏ ¶Ç´Â µğ·ºÅä¸®°¡ ¾øÀ¸¸é -1 ¹İÈ¯
-    else
-        if (c_file.attrib & _A_SUBDIR)
-            result = 0; // µğ·ºÅä¸®¸é 0 ¹İÈ¯
-        else
-            result = 1; // ±×¹ÛÀÇ °æ¿ì´Â "Á¸ÀçÇÏ´Â ÆÄÀÏ"ÀÌ±â¿¡ 1 ¹İÈ¯
-
-    _findclose(hFile);
-    return result;
-}
-
-
-ÃâÃ³: https://gyeongje.tistory.com/259?category=925558 [Gyeongje's Blog]
-*/
