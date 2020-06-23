@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main(int argc,char *argv)
+{
+    char cha1=0,cha2=0; //텍스트 문서에서 한 글자씩 읽어들여 저장할 변수
+ 
+    int chk1,chk2; // fscanf함수의 반환값 저장(문서의 끝 판단)
+    
+    int not_equal = 0; /*while 문 밖에있는 printf가 경우에 맞지 않게 출력되는것 방지.
+                             (두 파일이 동일하지 않은데도 출력되는것 방지)*/
+    FILE * fp1;
+    FILE * fp2;
+    fopen_s(&fp1,"argv[1]", "rt");
+    fopen_s(&fp2,"argv[2]", "rt");
+ 
+    if (fp1 == NULL || fp2 == NULL) // 스트림 형성 유무 검사
+    {
+        puts("FILE OPEN FAIL");
+        return -1;
+    }
+ 
+    while (1)
+    {        
+        chk1 = fscanf_s(fp1, "%c", &cha1);
+        chk2 = fscanf_s(fp2, "%c", &cha2);
+ 
+        if ((chk1 != EOF && chk2 == EOF) || (chk1 == EOF && chk2 != EOF)) 
+        { // 두 파일의 끝이 다르면 다른파일이다.
+            puts("두 파일은 동일하지 않습니다!! \n");
+            not_equal = 1; // while 밖의 printf 피하기 위함.
+            break;
+        }
+            
+        if (chk1 == EOF && chk2 == EOF)
+            break;
+ 
+        if (cha1 != cha2) //텍스트 문서의 한 글자씩 비교
+        {
+            puts("두 파일은 동일하지 않습니다!! \n");
+            not_equal = 1;
+            break;
+        }
+        
+    }
+    
+    if (not_equal != 1) //한 글자씩 비교하여 끝까지 모두 같다면 같은 텍스트 파일이다.
+        printf("두 파일은 완전히 동일합니다!! \n");
+    
+    
+ 
+    return 0;
+}
