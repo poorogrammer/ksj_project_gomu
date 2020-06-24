@@ -13,14 +13,16 @@ int main() {
     system("tasklist /fo csv > C:/whitelist01.txt");
 
     FILE* fp = fopen("C:/whitelist01.txt", "r");
-    FILE* fp2 = fopen("C:/whiltlist0101.txt", "r");
+    FILE* fp2 = fopen("C:/whiltlist0101.txt", "w");
 
-    char s[5] = "\n\",\"";
+    char s[4] = "\n\",";
+    char s2[2] = "\"";
     char buffer[255];
     char* token;
+    char* pStr;
 
 
-    while (fgets(buffer, MAX_STR_SIZE, fp)) {
+    while (fgets(buffer, sizeof(buffer), fp)) {
 
 
         token = strtok(buffer, s);
@@ -30,8 +32,11 @@ int main() {
             token = strtok(NULL, s);
 
         }
-        fprintf(fp2, "%s", buffer);
+        char* input = strchr(buffer, '\"');
+        fprintf(fp2, "%s\n", input+1);
+
     }
+
 
     fclose(fp);
     fclose(fp2);
@@ -39,4 +44,3 @@ int main() {
     return 0;
 
 }
-
