@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
+#define CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996)
+
+int screensaver() {
+	FILE* winrm_setting;
+	int line_count = 0;
+	char buff[100];
+	char input[2];
+
+	printf("화면보호기 설정이 되어있나 점검 합니다...\n");
+	printf("레지스트리 값을 비교합니다.\n");
+
+
+	system("reg query \"HKEY_CURRENT_USER\\Control Panel\\Desktop\" \/f ScreenSaveActive \> screen.txt");
+	winrm_setting =fopen( "screen.txt","r");
+	if (winrm_setting != NULL) {
+		printf("파일이 없을수 있음??\n");
+		fgets(buff, sizeof(buff), winrm_setting);
+		for (int i = 0; i < 3; i++) {
+			fgets(buff, sizeof(buff), winrm_setting);
+			printf("%s\n",buff);
+		}
+		if(char* ptr = strstr(buff, "1")) {
+			printf("화면보호기 설정이 잘 되어있습니다.\n");
+		}
+		else if (char* ptr = strstr(buff, "0")) {
+			printf("화면보호기를 설정 하시겠습니까(권장)?y/n\n");
+			scanf_s("%c", &input);
+			if (input == "y") {
+				system("Reg add \"HKEY_CURRENT_USER\Control Panel\Desktop\" \/v ScreenSaveActive \/t REG_SZ \/d 1 \/f");
+				system("Reg add \"HKEY_CURRENT_USER\Control Panel\Desktop\" \/v ScreenSaverlsSecure \/t REG_SZ \/d 0 \/f");
+				system("Reg add \"HKEY_CURRENT_USER\Control Panel\Desktop\" \/v ScreenSaveTimeOut \/t REG_SZ \/d 300 \/f");
+				system("Reg add \"HKEY_CURRENT_USER\Control Panel\Desktop\" \/v SCRNSAVE.EXE \/t REG_SZ \/d c:\WINDOWS\system32\Bubbles.scr /f");
+
+			}
+			else if (input == "n") {
+				printf("다음으로 넘어갑니다\n");
+			}
+		}
+	}
+	return 0;
+}
+
+	int main() {
+		screensaver();
+		return 0;
+	}
+
+	/*
+	레지스트리 값비교
+	레지스트리가 있는가?
+	있으면 잘 설정되어있고
+	안되어 있으면 설정하겠습니까
+	예스면 설정한다
+	아니면 권장을 권한다.
+	끝?
+	
+	*/
